@@ -4,6 +4,11 @@
  */
 
 /**
+ * @callback InputHandlerFn
+ * @returns
+ */
+
+/**
  * Se llama cuando se termina de cargar <body>
  */
 function onLoad() {
@@ -15,6 +20,24 @@ function onLoad() {
     const usdResultElement = document.querySelector("#usd-result");
     const usdGroupElement = document.querySelector("#usd-group");
     const btcGroupElement = document.querySelector("#btc-group");
+    const btcCurrentPriceElement = document.querySelector("#btc-current-price");
+
+    // == Mostrar precio de BTC
+
+    const REFRESH_TIME = 2500; // ms
+
+    /**
+     * Solicita el valor actual del BTC en USD a la API y
+     * lo renderiza en el elemento correspondiente.
+     * @returns {void} - Precio de BTC en USD.
+     */
+    const refreshBTCPrice = async () => {
+        const value = await convert(1, "USD");
+        btcCurrentPriceElement.innerText = `${value} USD`;
+    };
+
+    refreshBTCPrice();
+    setInterval(refreshBTCPrice, REFRESH_TIME);
 
     /**
      * Renderiza el resultado obtenido en el elemento correspondiente.
@@ -62,14 +85,26 @@ function onLoad() {
 
     // == Registrar listeners
 
+    /**
+     * Devuelve una función handler para los inputs.
+     * @param {AvailableCurrency} currency - Tipo de moneda a convertir
+     * @returns {InputHandlerFn} - Función handler
+     */
     function handleInput(currency) {
         const WAIT_TIME = 1000; // ms
         let inputTimer = 0;
 
-        return (e) => {
+        const element = {
+            USD: btcInputElement,
+            BTC: usdInputElement,
+        }[currency];
+
+        if (!element) return () => {};
+
+        return () => {
             clearTimeout(inputTimer);
 
-            const value = parseFloat(e.target.value);
+            const value = parseFloat(element.value);
             if (Number.isNaN(value)) {
                 setResult(currency, "error", "Valor inválido");
                 return;
@@ -93,16 +128,40 @@ function onLoad() {
         };
     }
 
-    btcInputElement.addEventListener("input", handleInput("USD"));
-    usdInputElement.addEventListener("input", handleInput("BTC"));
+    const btcInputHandler = handleInput("USD");
+    const usdInputHandler = handleInput("BTC");
+
+    btcInputElement.addEventListener("input", btcInputHandler);
+    usdInputElement.addEventListener("input", usdInputHandler);
+
+    // Inicializar
+    btcInputHandler();
+    usdInputHandler();
 }
 
+/**
+ * Manda una solicitud a la API para convertir de
+ * una moneda a otra.
+ * @param {number} value - Valor a convertir
+ * @param {AvailableCurrency} to - Tipo de moneda resultante
+ * @returns {number} - Resultado en la moneda deseada
+ */
 function convert(value, to) {
     return axios
-        .post("/convert", {
-            value,
-            to,
-        })
+        .post(
+            "/convert",
+            {
+                value,
+                to,
+            },
+            {
+                headers: {
+                    "Cache-Control": "no-cache",
+                    Pragma: "no-cache",
+                    Expires: "0",
+                },
+            }
+        )
         .then((res) => {
             const response = res?.data;
             return response;

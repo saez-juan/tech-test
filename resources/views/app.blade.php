@@ -47,6 +47,10 @@
 </head>
 <body onload="onLoad()">
     <div class="general-container border">
+        <div class="text-center">
+            <span class="form-label d-block mb-0">Precio de BTC</span>
+            <span class="form-text mt-0" id="btc-current-price">...</span>
+        </div>
         <div class="group" id="btc-group">
             <label class="form-label" for="btc-input">BTC</label>
             <input id="btc-input" class="form-control" type="number"  />
