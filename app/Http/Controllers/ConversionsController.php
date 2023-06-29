@@ -14,13 +14,6 @@ class ConversionsController extends Controller
         $conversion->btc = $btc_result;
         $conversion->btc_usd_price = $btc_price;
         $conversion->save();
-
-        return redirect()->route('home')->with('success', 'Conversión registrada');
-    }
-
-    public function index() {
-        $conversions = Conversion::all();
-        return view('');
     }
 
     public function convert(Request $request) {
@@ -39,6 +32,10 @@ class ConversionsController extends Controller
 
         $result = 0;
 
+        // == Concepto
+        // Convierto todo a satoshis y de ahí
+        // lo convierto a la unidad que necesito.
+        // ==
         // satoshi-usd-value = usd / satoshi-unit;
         // to usd:
         //   satoshis = req-btc * satoshi-unit

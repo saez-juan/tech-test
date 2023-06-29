@@ -6,7 +6,7 @@
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-9ndCyUaIbzAi2FUVXJi0CjmCapSmO7SnpJef0486qhLnuZ2cdeRhO02iuK6FUUVM" crossorigin="anonymous">
     <script async src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js" integrity="sha384-geWF76RCwLtnZ8qwWowPQNguL3RmwHVBC9FhGdlKrxdiJJigb/j/68SIy3Te4Bkz" crossorigin="anonymous"></script>
 
-    <title>Hola Mundaso</title>
+    <title>BTC / USD Converter</title>
 
     <style>
         body {
@@ -47,18 +47,18 @@
 </head>
 <body onload="onLoad()">
     <div class="general-container border">
-        <div class="text-center">
+        <div class="text-center mb-2">
             <span class="form-label d-block mb-0">Precio de BTC</span>
             <span class="form-text mt-0" id="btc-current-price">...</span>
         </div>
         <div class="group" id="btc-group">
             <label class="form-label" for="btc-input">BTC</label>
-            <input id="btc-input" class="form-control" type="number"  />
+            <input id="btc-input" value="0" class="form-control" type="number"  />
             <span id="usd-result" class="form-text mt-2 d-block">00.00 USD</span>
         </div>
         <div id="usd-group" class="group">
             <label for="btc-input" class="form-label">USD</label>
-            <input id="usd-input" class="form-control" type="number"  />
+            <input id="usd-input" value="0" class="form-control" type="number"  />
             <span id="btc-result" class="form-text mt-2 d-block">00.00 BTC</span>
         </div>
     </div>

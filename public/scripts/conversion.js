@@ -134,7 +134,7 @@ function onLoad() {
     btcInputElement.addEventListener("input", btcInputHandler);
     usdInputElement.addEventListener("input", usdInputHandler);
 
-    // Inicializar
+    // Inicializar resultados
     btcInputHandler();
     usdInputHandler();
 }
