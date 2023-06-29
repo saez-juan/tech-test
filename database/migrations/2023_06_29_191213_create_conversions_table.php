@@ -15,6 +15,7 @@ return new class extends Migration
             $table->id();
             $table->decimal("usd", 15, 5);
             $table->decimal("btc", 15, 11);
+            $table->decimal("btc_usd_price", 15, 5);
             $table->timestamps();
         });
     }

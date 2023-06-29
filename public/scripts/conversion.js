@@ -79,6 +79,15 @@ function onLoad() {
 
             inputTimer = setTimeout(async () => {
                 const result = await convert(value, currency);
+
+                if (result === null) {
+                    setResult(
+                        currency,
+                        "error",
+                        "Error interno. Intente nuevamente"
+                    );
+                    return;
+                }
                 setResult(currency, "result", result);
             }, WAIT_TIME);
         };
@@ -88,18 +97,18 @@ function onLoad() {
     usdInputElement.addEventListener("input", handleInput("BTC"));
 }
 
-async function convert(value, to) {
+function convert(value, to) {
     return axios
         .post("/convert", {
             value,
             to,
         })
-        .catch((e) => {
-            console.warn("Error interno: Respuesta erronea", e?.response?.data);
-            return null;
-        })
         .then((res) => {
             const response = res?.data;
             return response;
+        })
+        .catch((e) => {
+            console.warn("Error interno: Respuesta erronea", e?.response?.data);
+            return null;
         });
 }

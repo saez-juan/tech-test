@@ -4,19 +4,15 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use GuzzleHttp\Client;
-use App\Model\Convertion;
+use App\Models\Conversion;
 
 class ConversionsController extends Controller
 {
-    public function store(Request $request) {
-        $request->validate([
-            'usd' => 'required|min:0|max:999999999',
-            'btc' => 'required|min:0|max:999999999',
-        ]);
-
-        $conversion = new Convertion();
-        $conversion->usd = $request->usd;
-        $conversion->btc = $request->btc;
+    public function store(float $usd_result, float $btc_result, float $btc_price) {
+        $conversion = new Conversion();
+        $conversion->usd = $usd_result;
+        $conversion->btc = $btc_result;
+        $conversion->btc_usd_price = $btc_price;
         $conversion->save();
 
         return redirect()->route('home')->with('success', 'Conversión registrada');
@@ -54,13 +50,16 @@ class ConversionsController extends Controller
         $satoshi_unit = 0.00000001;
         $satoshi_usd_value = $price_usd / $satoshi_unit;
 
-        // from BTC to USD
         if ($request->to == "USD") {
             $satoshis = $request->value * $satoshi_unit;
             $result = $satoshis * $satoshi_usd_value;
+
+            $this->store($result, $request->value, $price_usd);
         } else if ($request->to == "BTC") {
             $satoshis = $request->value / $satoshi_usd_value;
             $result = $satoshis / $satoshi_unit;
+
+            $this->store($request->value, $result, $price_usd);
         }
 
         return $result;
