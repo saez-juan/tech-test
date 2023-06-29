@@ -11,7 +11,7 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('convertions', function (Blueprint $table) {
+        Schema::create('conversions', function (Blueprint $table) {
             $table->id();
             $table->decimal("usd", 15, 5);
             $table->decimal("btc", 15, 11);
@@ -24,6 +24,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('convertions');
+        Schema::dropIfExists('conversions');
     }
 };

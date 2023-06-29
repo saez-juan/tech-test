@@ -20,26 +20,42 @@
             display: grid;
             max-width: 400px;
             margin: auto;
-            padding: 1.5rem;
+            padding: 0.75rem;
             width: 100%;
             align-items: center;
             align-content: center;
             box-shadow: 0 0 0.75rem rgba(0, 0, 0, 0.1);
             border-radius: 0.5rem;
         }
+
+        .error-message {
+            color: var(--bs-danger);
+        }
+
+        .group {
+            padding: 0.75rem;
+            border-radius: 0.5rem;
+        }
+
+        .group-error {
+            border: 1px solid var(--bs-danger);
+        }
     </style>
+
+    <script defer src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+    <script defer src="{{ asset('scripts/conversion.js')}}"></script>
 </head>
-<body>
+<body onload="onLoad()">
     <div class="general-container border">
-        <div class="mb-4">
+        <div class="group" id="btc-group">
             <label class="form-label" for="btc-input">BTC</label>
             <input id="btc-input" class="form-control" type="number"  />
-            <span class="form-text">00.00 USD</span>
+            <span id="usd-result" class="form-text mt-2 d-block">00.00 USD</span>
         </div>
-        <div>
+        <div id="usd-group" class="group">
             <label for="btc-input" class="form-label">USD</label>
-            <input id="btc-input" class="form-control" type="number"  />
-            <span class="form-text">00.00 BTC</span>
+            <input id="usd-input" class="form-control" type="number"  />
+            <span id="btc-result" class="form-text mt-2 d-block">00.00 BTC</span>
         </div>
     </div>
 </body>

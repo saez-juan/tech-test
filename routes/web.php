@@ -1,6 +1,7 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\ConversionsController;
 
 /*
 |--------------------------------------------------------------------------
@@ -15,4 +16,6 @@ use Illuminate\Support\Facades\Route;
 
 Route::get('/', function () {
     return view('app');
-});
+})->name("home");
+
+Route::post('/convert', [ConversionsController::class, 'convert'])->name("convert");
